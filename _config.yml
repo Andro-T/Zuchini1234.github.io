@@ -1,11 +1,11 @@
 # Site settings
 author: Andro Tikvica
-title: 
+title: Data Science
 header-img: img/home-bg.png
 email: androtikvica@gmail.com
 copyright_name: Andro Tikvica
 description: > # this means to ignore newlines until "baseurl:"
-  
+  A Journey To (I Hope) Mastery
 baseurl: "" # the subpath of your site, e.g. /blog
 twitter_username: 
 github_username:  Zuchini1234
