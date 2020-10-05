@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "Microsoft Pitch Project - Module 1"
-date:       2020-10-05 04:33:48 +0000
+date:       2020-10-05 00:33:49 -0400
 permalink:  microsoft_pitch_project_-_module_1
 ---
 
@@ -45,32 +45,35 @@ Now, time for something I am more excited about:
 
 ### Code Outtakes 
 
-*productionbudgetdf = genredf.sortvalues('productionbudget')
-productionbudgetdf['genres'] = productionbudgetdf['genres'].map(lambda x: x.split(","))*
+```productionbudgetdf = genredf.sortvalues('productionbudget')
+productionbudgetdf['genres'] = productionbudgetdf['genres'].map(lambda x: x.split(","))
+```
 
 The first part of this cell was loading a previously altered dataframe ordered by budget to allow me to seperate the table into four quartiles with just the length of the datafram. I also split each 'genre' on ',' to create a list.  
 
-*length = len(productionbudgetdf)
+```length = len(productionbudgetdf)
 q0 = productionbudgetdf['productionbudget'].min()
 q1 = productionbudgetdf['productionbudget'][:int(length/4)].max()
 q2 = productionbudgetdf['productionbudget'][int(length/4):int(2length/4)].max()
 q3 = productionbudgetdf['productionbudget'][int(2length/4):int(3length/4)].max()
 q4 = productionbudgetdf['productionbudget'].max()*
+```
 
 This part identified the thresholds of each quarter of the dataframe. These became the boundaries of Low, Medium-Low, Medium-High, and High Budget movies.
 
-*df1 = productionbudgetdf[:int(length/4)]
+```df1 = productionbudgetdf[:int(length/4)]
 ef1 = df1.explode('genres')
 df2 = productionbudgetdf[int(length/4):int(2length/4)]
 ef2 = df2.explode('genres')
 df3 = productionbudgetdf[int(2length/4):int(3length/4)]
 ef3 = df3.explode('genres')
 df4 = productionbudgetdf[int(3length/4):]
-ef4 = df4.explode('genres')*
+ef4 = df4.explode('genres')
+```
 
 To separate each genre into its own row I used pd.explode to create a row for each genre in a movie. This added significantly to the length of the table but made the graphing later on much easier. Each number is for one of the quarters of budget.
 
-*a1 = []
+```a1 = []
 for i in df1['genres']:
     a1 += i
 a1 = set(a1)
@@ -85,11 +88,12 @@ a3 = set(a3)
 a4 = []
 for i in df4['genres']:
     a4 += i
-a4 = set(a4)*
+a4 = set(a4)
+```
 
 Created a list of the unique genres in each quarter.
 
-*b1 = []
+```b1 = []
 for i in a1:
     b1.append(ef1.loc[ef1['genres'] == i]['roi%'].mean())
 b2 = []
@@ -100,11 +104,12 @@ for i in a3:
     b3.append(ef3.loc[ef3['genres'] == i]['roi%'].mean())
 b4 = []
 for i in a4:
-    b4.append(ef4.loc[ef4['genres'] == i]['roi%'].mean())*
+    b4.append(ef4.loc[ef4['genres'] == i]['roi%'].mean())
+		```
 		
 	The above created a list to match the unique genre list generated with a1 - a4.  Now that I have all this data I can create a new dataframe containing both the budget, average roi, and genre. 
 
-*c1 = pd.DataFrame({
+```c1 = pd.DataFrame({
     'Genre' : [i for i in a1],
     'Budget' : "budget < 10000000",
     'AverageROI' : [i for i in b1]
@@ -123,13 +128,15 @@ c4 = pd.DataFrame({
     'Genre' : [i for i in a4],
     'Budget' : "budget > 60000000",
     'AverageROI' : [i for i in b4]
-})*
+})
+```
 
 Finally, I merged all of them into one table that I was able to graph with relative ease using seborn, merely setting data to equal d. 
 
-*d = c1.merge(c2, how = 'outer')
+```d = c1.merge(c2, how = 'outer')
 d = d.merge(c3, how = 'outer')
-d = d.merge(c4, how = 'outer')*
+d = d.merge(c4, how = 'outer')
+```
 
 This code is not overly complicated, but it took a lot of effort and creativity on my part to figure out a method to use the seaborn 'hue' operator. It is also, probably, the mots organized code I have written ever. It followed a prescribed structure and I never once forgot what I had named something. I did not use for loops to avoid nesting but I do not think it would have been much easier anyway. 
 
