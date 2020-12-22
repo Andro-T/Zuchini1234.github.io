@@ -37,6 +37,7 @@ The data needs to be normally distributed (i.e. resembling a bell curve) which c
 
 3. No or little Multicollinearity – 
 Multicollinearity occurs when different input variables are too highly correlated with each other. This can be checked by using a Pearson Correlation Matrix. Variables such as sqft_lot_15 and sqft_living_15 were removed because of their high correlation with other variables. 
+NB: While writing this, I discovered that there is another method for determining Multicollinearity called Variance Inflation Factor (VIF) with any VIF figures over 10 clearly indicating multicollinearity. I will save this knowledge for use in my next project. Cool explanation: https://www.analyticsvidhya.com/blog/2020/03/what-is-multicollinearity/.
 
 ![PCMatrix]( https://github.com/Zuchini1234/King-County-Business-Case-Project-Mod-2/blob/master/Images/PCMatrix.png)
 
