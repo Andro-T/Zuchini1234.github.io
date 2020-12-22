@@ -29,10 +29,10 @@ Even though Linear Regression is one of the least accurate prediction models, it
 ### Assumptions of Linear Regression
 There are five key assumptions that need to be met to perform a linear regression:
 
-1.Linear Relationship – 
+1. Linear Relationship – 
 The relationship between input and target variables needs to be linear. In other words, for a change in input, there is an assumption that there would be a linear change in the target variable. This can be tested with scatter plots. 
 
-2.Normality – 
+2. Normality – 
 The data needs to be normally distributed (i.e. resembling a bell curve) which can be checked with boxplots. 
 
 3. No or little Multicollinearity – 
