@@ -15,7 +15,7 @@ For this project we decided to fill the fictional shoes of a real estate consult
 ### Outline
 **1.	Creating a Multiple Linear Regression 
 2.	Answering Customer Questions
-3.	**Business Insights Summary**
+3.	Business Insights Summary**
 
 For a full view of the code that went into generating this project, please visit https://github.com/Zuchini1234/King-County-Business-Case-Project-Mod-2/blob/master/student.ipynb. 
 
@@ -109,6 +109,11 @@ Here is the equation we used.:
 ```
 
 ### Our Final Model 
-After dealing with the above mentioned assumptions and creating five separate models, trying to improve in each one, this is what we came out with in the end. 
+After dealing with the above-mentioned assumptions and creating five separate models, trying to improve in each one, this is what we came out with in the end. 
 ![Model_5_Summary]( https://github.com/Zuchini1234/King-County-Business-Case-Project-Mod-2/blob/master/Images/Model_5_Summary.png)
+
+These were the metrics for the final model:
+* **Adjusted R-Squared -** 0.755
+* **F-statistic -** 596.8
+* **P-Value** 0.00
 
