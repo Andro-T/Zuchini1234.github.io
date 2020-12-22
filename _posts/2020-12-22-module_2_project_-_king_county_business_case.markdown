@@ -13,9 +13,11 @@ For this project we decided to fill the fictional shoes of a real estate consult
 ![Seattle Skyline](https://github.com/Zuchini1234/King-County-Business-Case-Project-Mod-2/blob/master/Images/Seattle_Skyline.jpeg)
 
 ### Outline
-**1.	Creating a Multiple Linear Regression 
-2.	Answering Customer Questions
-3.	Business Insights Summary**
+1.	What is Linear Regression? 
+2.	Assumptions of Linear Regression
+3.	Multiple Linear Regression
+4.	Our Final Model
+5.	Our Final Equation
 
 For a full view of the code that went into generating this project, please visit https://github.com/Zuchini1234/King-County-Business-Case-Project-Mod-2/blob/master/student.ipynb. 
 
