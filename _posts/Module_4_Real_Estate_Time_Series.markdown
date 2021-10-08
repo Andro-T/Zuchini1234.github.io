@@ -27,7 +27,6 @@ seasonal_pdq = [(x[0], x[1], x[2], 12) for x in list(itertools.product(p, d, q))
 
 **Function 2** - The second set of functions finds the AIC score for every parameter combination for each of the dataframes in HI_dict above. 
 '''
-# Find AIC results for every parameter combination
 AIC = []
 for zipcode in HI_dict.keys():
     for param in pdq:
@@ -42,13 +41,11 @@ for zipcode in HI_dict.keys():
                 continue'''
 
 **Function 3** - Turn the list output from Function Number 2 into a dataframe so we can plug it into the next function. 
-'''# Turn the list into a DF
+'''
 AIC_df = pd.DataFrame(AIC, columns = ["zip","pdq", "pdqs", 'aic'])
 
-# Sort by ascending AIC values: lower is better
 AIC_df.sort_values('aic', ascending = True).groupby('zip')
 
-# Create a dict of only best performing params 
 AIC_dict = {}
 for i, g in AIC_df.sort_values('aic', ascending = True).groupby('zip'):
     AIC_dict[i] = g
@@ -57,7 +54,6 @@ for i, g in AIC_df.sort_values('aic', ascending = True).groupby('zip'):
 **Function 4** - Return a dataframe containing the ROI’s for each zipcode. 
 
 '''def find_roi(ts, params, train_size=0.8):
-    # DF to save results
     ROI_df = pd.DataFrame(columns=['zipcode', 'mean_roi', 'lower_roi', 'upper_roi', 'std_roi'])
     
     for zipc in ts.columns:
