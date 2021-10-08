@@ -17,7 +17,6 @@ To perform this operation I used Time Series models to predict the potential ret
 '''HI_dict = {}
 for zipc in hi_zips.columns:
     HI_dict[zipc] = hi_zips[zipc]
-    
 p = d = q = range(0, 2)
 pdq = list(itertools.product(p, d, q))
 seasonal_pdq = [(x[0], x[1], x[2], 12) for x in list(itertools.product(p, d, q))]'''
