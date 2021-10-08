@@ -10,7 +10,101 @@ To perform this operation I used Time Series models to predict the potential ret
 
 <img src='https://github.com/Andro-T/dsc-phase-4-project/blob/main/images/boxplot.png'>
 
+###The Main Functions Used  for Finding ROI
 
+**Function 1** - Creating a dict of all the zipcodes and their subset dataframe.
+
+'''# Create a dict of each Zipcodes data
+HI_dict = {}
+for zipc in hi_zips.columns:
+    HI_dict[zipc] = hi_zips[zipc]
+    
+# Set up list of all possible p/d/q values
+p = d = q = range(0, 2)
+pdq = list(itertools.product(p, d, q))
+seasonal_pdq = [(x[0], x[1], x[2], 12) for x in list(itertools.product(p, d, q))]
+'''
+
+**Function 2** - The second set of functions finds the AIC score for every parameter combination for each of the dataframes in HI_dict above. 
+'''
+# Find AIC results for every parameter combination
+AIC = []
+for zipcode in HI_dict.keys():
+    for param in pdq:
+        for param_seasonal in seasonal_pdq:
+            try:
+                mod = sm.tsa.statespace.SARIMAX(HI_dict[zipcode], order=param, 
+                                                seasonal_order=param_seasonal, enforce_stationarity=False, 
+                                                enforce_invertibility=False)
+                results = mod.fit()
+                AIC.append([zipcode, param, param_seasonal, np.abs(results.aic)])
+            except:
+                continue'''
+
+**Function 3** - Turn the list output from Function Number 2 into a dataframe so we can plug it into the next function. 
+'''# Turn the list into a DF
+AIC_df = pd.DataFrame(AIC, columns = ["zip","pdq", "pdqs", 'aic'])
+
+# Sort by ascending AIC values: lower is better
+AIC_df.sort_values('aic', ascending = True).groupby('zip')
+
+# Create a dict of only best performing params 
+AIC_dict = {}
+for i, g in AIC_df.sort_values('aic', ascending = True).groupby('zip'):
+    AIC_dict[i] = g
+    AIC_dict[i] = AIC_dict[i].iloc[0]'''
+
+**Function 4** - Return a dataframe containing the ROI’s for each zipcode. 
+
+'''def find_roi(ts, params, train_size=0.8):
+    # DF to save results
+    ROI_df = pd.DataFrame(columns=['zipcode', 'mean_roi', 'lower_roi', 'upper_roi', 'std_roi'])
+    
+    for zipc in ts.columns:
+
+        # Train test split
+        split_idx = round(len(ts[zipc].dropna()) * train_size)
+        
+        # Split
+        train = ts[zipc].dropna().iloc[:split_idx]
+        test = ts[zipc].dropna().iloc[split_idx:]
+        
+        #Best model using params input
+        best_model = tsa.SARIMAX(train,
+                         order = params[zipc].pdq,
+                         seasonal_order = params[zipc].pdqs, 
+                      maxiter=500, enforce_invertibility=False).fit()
+        
+        # Forecast Test Data
+        forecast = best_model.get_forecast(steps=len(test))
+        pred_df_test = pd.DataFrame([forecast.conf_int().iloc[:, 0], forecast.conf_int().iloc[:, 1], forecast.predicted_mean]).T
+        pred_df_test.columns = ["lower", 'upper', 'prediction']
+        
+        # Future Best Model
+        best_model_future = tsa.SARIMAX(ts[zipc],
+                                 order = params[zipc].pdq,
+                                 seasonal_order = params[zipc].pdqs, 
+                                 maxiter=500, enforce_invertibility=False).fit()
+        forecast = best_model_future.get_forecast(steps=24)
+        pred_df = pd.DataFrame([forecast.conf_int().iloc[:, 0], forecast.conf_int().iloc[:, 1], forecast.predicted_mean]).T
+        pred_df.columns = ["lower", 'upper', 'prediction']
+        
+        # Calculate ROI
+        mean_roi = (pred_df[-1:]['prediction'][0] - test[-1:][0])/test[-1:][0]
+        lower_roi = (pred_df[-1:]['lower'][0] - test[-1:][0])/test[-1:][0]
+        upper_roi = (pred_df[-1:]['upper'][0] - test[-1:][0])/test[-1:][0]
+        std_roi = np.std([lower_roi, upper_roi])
+        
+        temp_dict = {
+            'zipcode': str(zipc),
+            'mean_roi': mean_roi,
+            'lower_roi': lower_roi,
+            'upper_roi': upper_roi,
+            'std_roi': std_roi}
+        
+        ROI_df = ROI_df.append(temp_dict, ignore_index = True)
+        
+    return ROI_df'''
 
 
 ### Recommendation
