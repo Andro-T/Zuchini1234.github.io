@@ -14,16 +14,17 @@ To perform this operation I used Time Series models to predict the potential ret
 
 **Function 1** - Creating a dict of all the zipcodes and their subset dataframe.
 
-'''HI_dict = {}
+```HI_dict = {}
 for zipc in hi_zips.columns:
     HI_dict[zipc] = hi_zips[zipc]
 p = d = q = range(0, 2)
 pdq = list(itertools.product(p, d, q))
-seasonal_pdq = [(x[0], x[1], x[2], 12) for x in list(itertools.product(p, d, q))]'''
+seasonal_pdq = [(x[0], x[1], x[2], 12) for x in list(itertools.product(p, d, q))]
+```
 
 **Function 2** - The second set of functions finds the AIC score for every parameter combination for each of the dataframes in HI_dict above. 
-'''
-AIC = []
+
+```AIC = []
 for zipcode in HI_dict.keys():
     for param in pdq:
         for param_seasonal in seasonal_pdq:
@@ -34,10 +35,12 @@ for zipcode in HI_dict.keys():
                 results = mod.fit()
                 AIC.append([zipcode, param, param_seasonal, np.abs(results.aic)])
             except:
-                continue'''
+                continue
+ ```
 
 **Function 3** - Turn the list output from Function Number 2 into a dataframe so we can plug it into the next function. 
-'''
+
+```
 AIC_df = pd.DataFrame(AIC, columns = ["zip","pdq", "pdqs", 'aic'])
 
 AIC_df.sort_values('aic', ascending = True).groupby('zip')
@@ -45,11 +48,12 @@ AIC_df.sort_values('aic', ascending = True).groupby('zip')
 AIC_dict = {}
 for i, g in AIC_df.sort_values('aic', ascending = True).groupby('zip'):
     AIC_dict[i] = g
-    AIC_dict[i] = AIC_dict[i].iloc[0]'''
+    AIC_dict[i] = AIC_dict[i].iloc[0]
+```
 
 **Function 4** - Return a dataframe containing the ROI’s for each zipcode. 
 
-'''def find_roi(ts, params, train_size=0.8):
+```def find_roi(ts, params, train_size=0.8):
     ROI_df = pd.DataFrame(columns=['zipcode', 'mean_roi', 'lower_roi', 'upper_roi', 'std_roi'])
     
     for zipc in ts.columns:
@@ -96,7 +100,8 @@ for i, g in AIC_df.sort_values('aic', ascending = True).groupby('zip'):
         
         ROI_df = ROI_df.append(temp_dict, ignore_index = True)
         
-    return ROI_df'''
+    return ROI_df
+```
 
 
 ### Recommendation
